@@ -6,7 +6,6 @@ import javax.persistence.EntityManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 import com.rgm.recipeimporter.domain.ImportedRecipeBean;
 
 @Singleton
@@ -28,12 +27,12 @@ public class RecipeImportRepository
 		}
 	}
 	
-	@Transactional //- nothing was inserted with this
+	//@Transactional - nothing was inserted with this
 	private void saveRecipe(ImportedRecipeBean recipe)
 	{
-		//entityManager.getTransaction().begin();
+		entityManager.getTransaction().begin();
 		entityManager.persist(recipe);
-		/*
+		
 		try
 		{
 			entityManager.getTransaction().commit();
@@ -41,6 +40,6 @@ public class RecipeImportRepository
 		catch (Exception m)
 		{
 			System.out.println("Duplicate entry: " + m.getMessage());
-		}*/
+		}
 	}
 }

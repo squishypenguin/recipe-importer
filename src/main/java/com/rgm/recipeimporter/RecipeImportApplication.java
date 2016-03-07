@@ -20,9 +20,9 @@ import com.rgm.recipeimporter.domain.ImportedRecipeBuilder;
 // TODO add logger
 public class RecipeImportApplication
 {
-	@Inject private final RecipeImportRepository repository;
+	private final RecipeImportRepository repository;
 
-	public RecipeImportApplication(RecipeImportRepository repository)
+	@Inject public RecipeImportApplication(RecipeImportRepository repository)
 	{
 		this.repository = repository;
 	}
