@@ -45,10 +45,10 @@ public @Data class ImportedRecipeBean
 	public ImportedRecipeBean(String name, List<String> attributes, List<String> ingredients, List<String> directions, String url, List<String> notes)
 	{
 		this.name = name;
-		this.attributes = StringUtils.join(attributes, "\\n");
-		this.ingredients = StringUtils.join(ingredients, "\\n");
-		this.directions = StringUtils.join(directions, "\\n");
+		this.attributes = StringUtils.join(attributes, "\n");
+		this.ingredients = StringUtils.join(ingredients, "\n");
+		this.directions = StringUtils.join(directions, "\n");
 		this.url = url;
-		this.notes = CollectionUtils.isNotEmpty(notes) ? StringUtils.join(notes, "\\n") : null;
+		this.notes = CollectionUtils.isNotEmpty(notes) ? StringUtils.join(notes, "\n") : null;
 	}
 }

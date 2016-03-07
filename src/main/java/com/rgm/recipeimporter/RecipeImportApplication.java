@@ -20,9 +20,8 @@ import com.rgm.recipeimporter.domain.ImportedRecipeBuilder;
 // TODO add logger
 public class RecipeImportApplication
 {
-	private final RecipeImportRepository repository;
+	@Inject private final RecipeImportRepository repository;
 
-	@Inject
 	public RecipeImportApplication(RecipeImportRepository repository)
 	{
 		this.repository = repository;
@@ -42,7 +41,7 @@ public class RecipeImportApplication
 		final List<String> buffer = new ArrayList<>(); 
 		ImportedRecipeBuilder recipeBuilder = new ImportedRecipeBuilder();
 		boolean hasNotes = false;
-		boolean nextIsName = false;
+		boolean nextIsName = true;
 		
 		@Cleanup final FileInputStream inputStream = new FileInputStream(fileName);
 		final LineIterator lineIterator = IOUtils.lineIterator(inputStream, "UTF-8");
@@ -55,10 +54,6 @@ public class RecipeImportApplication
 				{
 					recipeBuilder.withName(currentLine);
 					nextIsName = false;
-				}
-				else
-				{
-					buffer.add(currentLine);
 				}
 				
 				// what type of line are we?
@@ -120,6 +115,10 @@ public class RecipeImportApplication
 							nextIsName = true;
 							buffer.clear();
 							break;
+						}
+						else
+						{
+							buffer.add(currentLine);
 						}
 				}
 			}
