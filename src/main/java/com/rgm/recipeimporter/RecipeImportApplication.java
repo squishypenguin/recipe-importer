@@ -40,8 +40,9 @@ public class RecipeImportApplication
 	{
 		final List<ImportedRecipeBean> recipes = new ArrayList<>();
 		final List<String> buffer = new ArrayList<>(); 
-		boolean hasNotes = false;
 		ImportedRecipeBuilder recipeBuilder = new ImportedRecipeBuilder();
+		boolean hasNotes = false;
+		boolean nextIsName = false;
 		
 		@Cleanup final FileInputStream inputStream = new FileInputStream(fileName);
 		final LineIterator lineIterator = IOUtils.lineIterator(inputStream, "UTF-8");
@@ -50,16 +51,23 @@ public class RecipeImportApplication
 			final String currentLine = lineIterator.next().trim();
 			if (StringUtils.isNotBlank(currentLine))
 			{
-				buffer.add(currentLine);
+				if (nextIsName)
+				{
+					recipeBuilder.withName(currentLine);
+					nextIsName = false;
+				}
+				else
+				{
+					buffer.add(currentLine);
+				}
 				
 				// what type of line are we?
 				switch (currentLine.toLowerCase())
 				{
 					case "ingredients":
 					case "ingredients:":
-						// all lines prior to this are the recipe name and its attributes
-						recipeBuilder.withAttributes(buffer.subList(1, buffer.size()));
-						recipeBuilder.withName(buffer.get(0));
+						// all lines prior to this are the recipe attributes
+						recipeBuilder.withAttributes(buffer);
 						buffer.clear();
 						break;
 					case "instructions":
@@ -109,6 +117,7 @@ public class RecipeImportApplication
 							
 							recipeBuilder = new ImportedRecipeBuilder();
 							hasNotes = false;
+							nextIsName = true;
 							buffer.clear();
 							break;
 						}

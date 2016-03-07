@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,16 +27,16 @@ public @Data class ImportedRecipeBean
 	@Lob @Column(name="attributes_blob")
 	private String attributes;
 	
-	@Lob @Column(name="ingredients_blob")
+	@Lob @NonNull @Column(name="ingredients_blob")
 	private String ingredients;
 	
-	@Lob @Column(name="directions_blob")
+	@Lob @NonNull @Column(name="directions_blob")
 	private String directions;
 	
-	@Column(name="name")
+	@NonNull @Column(name="name")
 	private String name;
 	
-	@Column(name="url")
+	@NonNull @Column(name="url")
 	private String url;
 	
 	@Column(name="notes")
