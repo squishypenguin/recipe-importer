@@ -10,12 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-@Entity
-@Table(name="imported_recipe")
-public class ImportedRecipeBean
+@Entity @Table(name="imported_recipe")
+@NoArgsConstructor
+public @Data class ImportedRecipeBean
 {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -29,14 +32,15 @@ public class ImportedRecipeBean
 	@Lob @Column(name="directions_blob")
 	private String directions;
 	
+	@Column(name="name")
 	private String name;
+	
+	@Column(name="url")
 	private String url;
+	
+	@Column(name="notes")
 	private String notes;
 	
-	public ImportedRecipeBean()
-	{	
-	}
-
 	public ImportedRecipeBean(String name, List<String> attributes, List<String> ingredients, List<String> directions, String url, List<String> notes)
 	{
 		this.name = name;
@@ -45,75 +49,5 @@ public class ImportedRecipeBean
 		this.directions = StringUtils.join(directions, "\\n");
 		this.url = url;
 		this.notes = CollectionUtils.isNotEmpty(notes) ? StringUtils.join(notes, "\\n") : null;
-	}
-	
-	public String getNotes()
-	{
-		return notes;
-	}
-
-	public void setNotes(String notes)
-	{
-		this.notes = notes;
-	}
-
-	public Long getId()
-	{
-		return id;
-	}
-
-	public void setId(Long id)
-	{
-		this.id = id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public String getAttributes()
-	{
-		return attributes;
-	}
-
-	public void setAttributes(String attributes)
-	{
-		this.attributes = attributes;
-	}
-
-	public String getIngredients()
-	{
-		return ingredients;
-	}
-
-	public void setIngredients(String ingredients)
-	{
-		this.ingredients = ingredients;
-	}
-
-	public String getDirections()
-	{
-		return directions;
-	}
-
-	public void setDirections(String directions)
-	{
-		this.directions = directions;
-	}
-
-	public String getUrl()
-	{
-		return url;
-	}
-
-	public void setUrl(String url)
-	{
-		this.url = url;
 	}
 }

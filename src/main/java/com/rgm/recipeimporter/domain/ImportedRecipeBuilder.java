@@ -2,10 +2,12 @@ package com.rgm.recipeimporter.domain;
 
 import java.util.List;
 
+import lombok.NoArgsConstructor;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-
+@NoArgsConstructor
 public class ImportedRecipeBuilder
 {
 	private String name;
@@ -14,8 +16,6 @@ public class ImportedRecipeBuilder
 	private List<String> directions;
 	private String url;
 	private List<String> notes;
-	
-	public ImportedRecipeBuilder() {}
 	
 	public ImportedRecipeBuilder withName(String name)
 	{
