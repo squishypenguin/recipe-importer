@@ -43,6 +43,7 @@ public class RecipeImportApplication
 		boolean hasNotes = false;
 		boolean nextIsName = true;
 		
+		// do scan from name to url and then pass that blob to recipe parser?
 		@Cleanup final FileInputStream inputStream = new FileInputStream(fileName);
 		final LineIterator lineIterator = IOUtils.lineIterator(inputStream, "UTF-8");
 		while (lineIterator.hasNext())

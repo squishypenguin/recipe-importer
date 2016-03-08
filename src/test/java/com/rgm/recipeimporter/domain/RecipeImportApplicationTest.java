@@ -3,6 +3,7 @@ package com.rgm.recipeimporter.domain;
 import static org.mockito.Mockito.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +50,10 @@ public class RecipeImportApplicationTest
 			assertTrue(first.getAttributes().startsWith("PREP TIME 5 mins"));
 			assertTrue(first.getIngredients().startsWith("8 oz. udon noodles"));
 			
+			final ImportedRecipeBean second = beans.get(1);
+			assertTrue(second.getAttributes().startsWith("YIELD:makes 4 servings"));
+			assertTrue(second.getIngredients().startsWith("1/4 cup cocoa powder"));
+			
 			final ImportedRecipeBean last = beans.get(2);
 			final String notes = last.getNotes();
 			assertTrue(!StringUtils.endsWith(notes, last.getUrl()));
@@ -57,8 +62,7 @@ public class RecipeImportApplicationTest
 		}
 		catch (IOException i)
 		{
-			System.out.println("Failed to import recipes:");
-			i.printStackTrace();
+			fail("Failed to import recipes: " + i.getMessage());
 		}
 	}
 }
