@@ -38,7 +38,7 @@ public class RecipeImportApplication
 	private List<ImportedRecipeBean> loadRecipesFromFile(String fileName) throws IOException
 	{
 		final List<ImportedRecipeBean> recipes = new ArrayList<>();
-		final List<String> buffer = new ArrayList<>(); 
+		List<String> buffer = new ArrayList<>(); 
 		ImportedRecipeBuilder recipeBuilder = new ImportedRecipeBuilder();
 		boolean hasNotes = false;
 		boolean nextIsName = true;
@@ -54,6 +54,16 @@ public class RecipeImportApplication
 				{
 					recipeBuilder.withName(currentLine);
 					nextIsName = false;
+					continue;
+				}
+				else if (UrlValidator.getInstance().isValid(currentLine))
+				{
+					recipes.add(completeRecipe(recipeBuilder, buffer, hasNotes, currentLine));
+					recipeBuilder = new ImportedRecipeBuilder();
+					hasNotes = false;
+					nextIsName = true;
+					buffer = new ArrayList<>(); 
+					continue;
 				}
 				
 				// what type of line are we?
@@ -62,16 +72,16 @@ public class RecipeImportApplication
 					case "ingredients":
 					case "ingredients:":
 						// all lines prior to this are the recipe attributes
-						recipeBuilder.withAttributes(buffer);
-						buffer.clear();
+						recipeBuilder.withAttributes(buffer); 
+						buffer = new ArrayList<>(); 
 						break;
 					case "instructions":
 					case "instructions:":
 					case "directions":
 					case "directions:":
 						// all lines prior to this are the ingredients
-						recipeBuilder.withIngredients(buffer);
-						buffer.clear();
+						recipeBuilder.withIngredients(buffer); 
+						buffer = new ArrayList<>(); 
 						break;
 					case "notes":
 					case "notes:":
@@ -80,49 +90,38 @@ public class RecipeImportApplication
 						// tips are last so all lines before this are the directions
 						recipeBuilder.withDirections(buffer);
 						hasNotes = true;
-						buffer.clear();
+						buffer = new ArrayList<>(); 
 						break;
 					default:
-						// see if it's a url, if so, we're at the end of the recipe
-						final boolean isUrl = UrlValidator.getInstance().isValid(currentLine);
-						if (isUrl)
-						{
-							recipeBuilder.withUrl(currentLine);
-							
-							// all lines prior to this are the directions
-							if (hasNotes)
-							{
-								recipeBuilder.withNotes(buffer);									
-							}
-							else
-							{
-								recipeBuilder.withDirections(buffer);
-							}
-							
-							// recipe is complete, build it
-							try
-							{
-								final ImportedRecipeBean recipe = recipeBuilder.build();
-								recipes.add(recipe);
-							}
-							catch (IllegalArgumentException i)
-							{
-								System.out.println(i.getMessage());
-							}
-							
-							recipeBuilder = new ImportedRecipeBuilder();
-							hasNotes = false;
-							nextIsName = true;
-							buffer.clear();
-							break;
-						}
-						else
-						{
-							buffer.add(currentLine);
-						}
+						buffer.add(currentLine);
 				}
 			}
 		}
 		return recipes;
+	}
+	
+	private ImportedRecipeBean completeRecipe(ImportedRecipeBuilder recipeBuilder, List<String> buffer, boolean hasNotes, String currentLine)
+	{
+		recipeBuilder.withUrl(currentLine);
+
+		if (hasNotes)
+		{
+			recipeBuilder.withNotes(buffer);									
+		}
+		else
+		{
+			recipeBuilder.withDirections(buffer);
+		}
+
+		// recipe is complete, build it
+		try
+		{
+			return recipeBuilder.build();
+		}
+		catch (IllegalArgumentException i)
+		{
+			System.out.println(i.getMessage());
+		}
+		return null;
 	}
 }

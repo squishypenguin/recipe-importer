@@ -45,9 +45,15 @@ public class RecipeImportApplicationTest
 			final List<ImportedRecipeBean> beans = captor.getValue();
 			assertEquals(3, beans.size());
 			
+			final ImportedRecipeBean first = beans.get(0);
+			assertTrue(first.getAttributes().startsWith("PREP TIME 5 mins"));
+			assertTrue(first.getIngredients().startsWith("8 oz. udon noodles"));
+			
 			final ImportedRecipeBean last = beans.get(2);
 			final String notes = last.getNotes();
 			assertTrue(!StringUtils.endsWith(notes, last.getUrl()));
+			assertTrue(last.getAttributes().startsWith("YIELD:makes 4 servings"));
+			assertTrue(last.getIngredients().startsWith("1/4 cup cocoa powder"));
 		}
 		catch (IOException i)
 		{
