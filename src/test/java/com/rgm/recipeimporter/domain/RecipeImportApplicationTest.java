@@ -51,8 +51,8 @@ public class RecipeImportApplicationTest
 			assertTrue(first.getIngredients().startsWith("8 oz. udon noodles"));
 			
 			final ImportedRecipeBean second = beans.get(1);
-			assertTrue(second.getAttributes().startsWith("YIELD:makes 4 servings"));
-			assertTrue(second.getIngredients().startsWith("1/4 cup cocoa powder"));
+			assertTrue(second.getAttributes().startsWith("COOK TIME 15 mins"));
+			assertTrue(second.getIngredients().startsWith("* 4 cups cooked rice"));
 			
 			final ImportedRecipeBean last = beans.get(2);
 			final String notes = last.getNotes();

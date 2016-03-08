@@ -3,6 +3,7 @@ package com.rgm.recipeimporter.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -11,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor
 public class ImportedRecipeBuilder
 {
-	private String name;
+	@Getter private String name;
 	private List<String> attributes = new ArrayList<>();
 	private List<String> ingredients = new ArrayList<>();
 	private List<String> directions = new ArrayList<>();

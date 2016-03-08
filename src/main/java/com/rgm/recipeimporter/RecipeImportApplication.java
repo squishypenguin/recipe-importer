@@ -2,6 +2,8 @@ package com.rgm.recipeimporter;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +67,14 @@ public class RecipeImportApplication
 					nextIsName = true;
 					buffer = new ArrayList<>(); 
 					continue;
+				}
+				else
+				{
+					final CharsetEncoder encoder = Charset.forName("UTF-8").newEncoder();
+					if (!encoder.canEncode(currentLine))
+					{
+						System.out.println("ERROR: Fixme: recipe '" + recipeBuilder.getName() + "' has line with non-utf-8 character: '" + currentLine + "'");
+					}
 				}
 				
 				// what type of line are we?
