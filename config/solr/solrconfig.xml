@@ -36,13 +36,6 @@
                     class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"/>
 
   <codecFactory class="solr.SchemaCodecFactory"/>
-
-  <!-- 
-  <schemaFactory class="ManagedIndexSchemaFactory">
-    <bool name="mutable">true</bool>
-    <str name="managedSchemaResourceName">managed-schema</str>
-  </schemaFactory>
-  -->
   <schemaFactory class="ClassicIndexSchemaFactory"/>
 
   <indexConfig>
@@ -51,34 +44,17 @@
 
   <!-- The default high-performance update handler -->
   <updateHandler class="solr.DirectUpdateHandler2">
-
-    <!-- Enables a transaction log, used for real-time get, durability, and
-         and solr cloud replica recovery.  The log can grow as big as
-         uncommitted changes to the index, so use of a hard autoCommit
-         is recommended (see below).
-         "dir" - the target directory for transaction logs, defaults to the
-                solr data directory.
-         "numVersionBuckets" - sets the number of buckets used to keep
-                track of max version values when checking for re-ordered
-                updates; increase this value to reduce the cost of
-                synchronizing access to version buckets during high-volume
-                indexing, this requires 8 bytes (long) * numVersionBuckets
-                of heap space per Solr core.
-    -->
     <updateLog>
       <str name="dir">${solr.ulog.dir:}</str>
       <int name="numVersionBuckets">${solr.ulog.numVersionBuckets:65536}</int>
     </updateLog>
-
     <autoCommit>
       <maxTime>${solr.autoCommit.maxTime:15000}</maxTime>
       <openSearcher>false</openSearcher>
     </autoCommit>
-
     <autoSoftCommit>
       <maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime>
     </autoSoftCommit>
-
   </updateHandler>
 
   <query>
@@ -169,20 +145,16 @@
       <str name="echoParams">explicit</str>
       <str name="wt">json</str>
       <str name="indent">true</str>
+      <int name="rows">10</int>
+    </lst>
+    <lst name="appends">
+        <str name="omitHeader">true</str>
     </lst>
   </requestHandler>
-
-
-  <requestHandler name="/browse" class="solr.SearchHandler" useParams="query,facets,velocity,browse">
-    <lst name="defaults">
-      <str name="echoParams">explicit</str>
-    </lst>
-  </requestHandler>
-
 
   <initParams path="/update/**,/query,/select,/tvrh,/elevate,/spell,/browse">
     <lst name="defaults">
-      <str name="df">_text_</str>
+      <str name="df">id</str>
     </lst>
   </initParams>
 
@@ -198,7 +170,7 @@
     <lst name="defaults">
       <str name="lowernames">true</str>
       <str name="fmap.meta">ignored_</str>
-      <str name="fmap.content">_text_</str>
+      <str name="fmap.content">id</str>
     </lst>
   </requestHandler>
 
@@ -300,29 +272,6 @@
     </processor>
     <processor class="solr.RunUpdateProcessorFactory"/>
   </updateRequestProcessorChain>
-
-  <!-- Deduplication
-
-       An example dedup update processor that creates the "id" field
-       on the fly based on the hash code of some other fields.  This
-       example has overwriteDupes set to false since we are using the
-       id field as the signatureField and Solr will maintain
-       uniqueness based on that anyway.  
-       
-    -->
-  <!--
-     <updateRequestProcessorChain name="dedupe">
-       <processor class="solr.processor.SignatureUpdateProcessorFactory">
-         <bool name="enabled">true</bool>
-         <str name="signatureField">id</str>
-         <bool name="overwriteDupes">false</bool>
-         <str name="fields">name,features,cat</str>
-         <str name="signatureClass">solr.processor.Lookup3Signature</str>
-       </processor>
-       <processor class="solr.LogUpdateProcessorFactory" />
-       <processor class="solr.RunUpdateProcessorFactory" />
-     </updateRequestProcessorChain>
-    -->
 
   <queryResponseWriter name="json" class="solr.JSONResponseWriter">
     <!-- For the purposes of the tutorial, JSON responses are written as
