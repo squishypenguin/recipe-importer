@@ -1,7 +1,7 @@
 <dataConfig>
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/recipes" user="root" password="r658p6!" />
   <document>
-      <entity name="recipe" transformer="RegexTransformer" query="select id,name,CONVERT(attributes_blob USING ascii) as attributes,CONVERT(ingredients_blob USING ascii) as ingredients,CONVERT(directions_blob USING ascii) as directions,notes,url from imported_recipe">
+      <entity name="recipe" transformer="RegexTransformer" query="select id,name,CONVERT(attributes_blob USING utf8) as attributes,CONVERT(ingredients_blob USING utf8) as ingredients,CONVERT(directions_blob USING utf8) as directions,notes,url from imported_recipe">
           <field column="id" name="id" />
           <field column="name" name="name" />
           <field column="attributes" splitBy="\|" sourceColName="attributes" />
