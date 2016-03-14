@@ -15,7 +15,7 @@ public class RecipeImporter
 		final Injector injector = Guice.createInjector(new JpaPersistModule("imported-recipes"));
 		injector.getInstance(PersistService.class).start();
 		
-		final String fileName = "/Users/julie/Downloads/recipes.txt"; //args[0];
+		final String fileName = "/Users/julie/Downloads/recipeFix.txt";//recipes.txt"; //args[0];
 		
 		try
 		{

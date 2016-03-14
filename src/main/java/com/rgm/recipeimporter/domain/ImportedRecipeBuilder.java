@@ -1,7 +1,9 @@
 package com.rgm.recipeimporter.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,7 @@ public class ImportedRecipeBuilder
 	@Getter private String name;
 	private List<String> attributes = new ArrayList<>();
 	private List<String> ingredients = new ArrayList<>();
+	private Set<String> ingredientsTags = new HashSet<>();
 	private List<String> directions = new ArrayList<>();
 	private String url;
 	private List<String> notes = new ArrayList<>();
@@ -34,6 +37,12 @@ public class ImportedRecipeBuilder
 	public ImportedRecipeBuilder withIngredients(List<String> ingredients)
 	{
 		this.ingredients = ingredients;
+		return this;
+	}
+	
+	public ImportedRecipeBuilder withIngredientsTags(Set<String> ingredientsTags)
+	{
+		this.ingredientsTags = ingredientsTags;
 		return this;
 	}
 	
@@ -75,6 +84,6 @@ public class ImportedRecipeBuilder
 		}
 		
 		// purposely put bean into its own class since it needs the entity annotations
-		return new ImportedRecipeBean(name, attributes, ingredients, directions, url, notes);
+		return new ImportedRecipeBean(name, attributes, ingredients, ingredientsTags, directions, url, notes);
 	}
 }

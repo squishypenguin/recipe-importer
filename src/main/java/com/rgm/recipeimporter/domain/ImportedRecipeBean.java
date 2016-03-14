@@ -1,6 +1,7 @@
 package com.rgm.recipeimporter.domain;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +33,9 @@ public @Data class ImportedRecipeBean
 	@Lob @NonNull @Column(name="ingredients_blob")
 	private String ingredients;
 	
+	@NonNull @Column(name="ingredients_Tags")
+	private String ingredientsTags;
+	
 	@Lob @NonNull @Column(name="directions_blob")
 	private String directions;
 	
@@ -44,11 +48,12 @@ public @Data class ImportedRecipeBean
 	@Column(name="notes")
 	private String notes;
 	
-	public ImportedRecipeBean(String name, List<String> attributes, List<String> ingredients, List<String> directions, String url, List<String> notes)
+	public ImportedRecipeBean(String name, List<String> attributes, List<String> ingredients, Set<String> ingredientsTags, List<String> directions, String url, List<String> notes)
 	{
 		this.name = name;
 		this.attributes = StringUtils.join(attributes, DELIMITER);
 		this.ingredients = StringUtils.join(ingredients, DELIMITER);
+		this.ingredientsTags = StringUtils.join(ingredientsTags, DELIMITER);
 		this.directions = StringUtils.join(directions, DELIMITER);
 		this.url = url;
 		this.notes = CollectionUtils.isNotEmpty(notes) ? StringUtils.join(notes, DELIMITER) : null;
