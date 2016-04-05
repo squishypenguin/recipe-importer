@@ -24,9 +24,9 @@
     <field name="attributes" type="strings" indexed="false" stored="true" />
     <field name="ingredients" type="strings" indexed="true" stored="true" />
     <field name="directions" type="strings" indexed="false" stored="true" />
-    <field name="notes" type="text_general" indexed="false" stored="false" />
-    <field name="ingredients_facet" type="ingredients_facet_field" indexed="true" stored="false" multiValued="true" />
-    <copyField source="ingredients" dest="ingredients_facet" />
+    <field name="notes" type="text_general" indexed="false" stored="true" />
+    <field name="ingredients_facet" type="strings" indexed="true" stored="true" multiValued="true" />
+    <!--<copyField source="ingredients" dest="ingredients_facet" />-->
 
     <uniqueKey>id</uniqueKey>
 
