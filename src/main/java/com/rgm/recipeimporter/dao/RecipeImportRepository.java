@@ -23,6 +23,11 @@ public class RecipeImportRepository
 	{
 		for (ImportedRecipeBean recipe : recipes)
 		{
+			if (recipe == null)
+			{
+				System.out.println("Null recipe passed down to save");
+				continue;
+			}
 			saveRecipe(recipe);
 		}
 	}

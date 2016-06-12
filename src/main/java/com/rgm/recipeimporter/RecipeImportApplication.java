@@ -70,12 +70,13 @@ public class RecipeImportApplication
 				}
 				else
 				{
+					// TODO move out to a filter
 					final CharsetEncoder encoder = Charset.forName("UTF-8").newEncoder();
 					if (!encoder.canEncode(currentLine))
 					{
 						System.out.println("ERROR: Fixme: recipe '" + recipeBuilder.getName() + "' has line with non-utf-8 character: '" + currentLine + "'");
 					}
-					currentLine = StringUtils.replaceEach(currentLine, new String[]{"1½","1¾","1⅓","½","¼","⅓","*","⅔","¾"}, new String[]{"1-1/2","1-3/4","1-1/3","1/2","1/4","1/3","","2/3","3/4"});
+					currentLine = StringUtils.replaceEach(currentLine, new String[]{"1¼","1½","1¾","1⅓","½","¼","⅓","*","⅔","¾"}, new String[]{"1-1/4","1-1/2","1-3/4","1-1/3","1/2","1/4","1/3","","2/3","3/4"});
 				}
 				
 				// what type of line are we?

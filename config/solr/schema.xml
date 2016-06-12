@@ -21,6 +21,7 @@
     <field name="id" type="long" indexed="true" stored="true"/>
     <field name="name" type="string" indexed="true" stored="true" omitNorms="false" />
     <field name="url" type="string" indexed="true" stored="true"/>
+    <field name="url_domain" type="url_field" indexed="true" stored="true" />
     <field name="attributes" type="strings" indexed="false" stored="true" />
     <field name="ingredients" type="strings" indexed="true" stored="true" />
     <field name="directions" type="strings" indexed="false" stored="true" />
@@ -125,7 +126,20 @@
             <tokenizer class="solr.WhitespaceTokenizerFactory" />
         </analyzer>
     </fieldType>
-    
+   
+    <fieldType name="url_field" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="0"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="0"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+ 
     <fieldType name="text_porter" class="solr.TextField" positionIncrementGap="100">
         <analyzer>
  	        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
